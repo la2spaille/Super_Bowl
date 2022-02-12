@@ -1,0 +1,41 @@
+html,body {
+    overscroll-behavior: none;
+}
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    vertical-align: baseline;
+    text-decoration: none;
+    text-transform: inherit;
+    transition: 0.15s;
+    list-style: none;
+    user-select: none;
+    color: inherit;
+    box-sizing: border-box;
+    color: inherit;
+    font-weight: inherit;
+    background-repeat: no-repeat;
+    &::selection {
+        background: transparent;
+    }
+}
+body,
+main {
+    color: #fff;
+    font-weight: 400;
+    text-transform: none;
+    position: relative;
+    font-family: 'Dosis', sans-serif;
+    font-weight: 500;
+}
+body::-webkit-scrollbar {
+    display: none;
+}
+svg {
+    pointer-events: none;
+}
+span {
+    display: inline-block;
+}

@@ -1,0 +1,206 @@
+// Cusrsor du site
+.w-site-cursor {
+    width: 60px;
+    height: 60px;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 999999;
+    pointer-events: none;
+    will-change: transform;
+    &.site-cursor--link-hover {
+        .site-cursor {
+            opacity: 0;
+        }
+    }
+    &.site-cursor--img-hover {
+        .site-cursor {
+            animation: rotation 3s linear infinite;
+            transform: translate(-50%, -50%) scale(1);
+            animation-fill-mode: forwards;
+            .zoom {
+                transform: scale(2.5);
+            }
+        }
+    }
+    &.site-cursor--team-hover {
+        .site-cursor {
+            transform: translate(-50%, -50%) scale(3.75);
+        }
+    }
+}
+.site-cursor {
+    position: absolute;
+    height: 30px;
+    border: 1px solid #fff;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    transition: 0.35s ease-in-out;
+    
+    .zoom {
+        fill: #fff;
+        transform: scale(0);
+        font-size: 50px;
+    }
+}
+
+// Loader
+.loader {
+    position: fixed;
+    top: -1500px;
+    left: -1500px;
+    width: 3000px;
+    height: 3000px;
+    z-index: 9999;
+    background: var(--salmon);
+    pointer-events: none;
+    transition: 0s;
+    transform: translate(50vw, calc(50vh));
+    border-radius: 50%;
+    transition: 1.5s;
+    &.dom-loaded {
+        transform: translate(50vw, calc(-50%));
+    }
+    img {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50vw;
+        height: auto;
+    }
+}
+
+// Transition
+.w-transition-overlay {
+    position: fixed;
+    top: -1500px;
+    left: -1500px;
+    width: 3000px;
+    height: 3000px;
+    z-index: 9999;
+    pointer-events: none;
+    transition: 0s;
+    transform: translateX(-100%);
+    &>div {
+        transition: 0.7s cubic-bezier(0.19, 0.8, 0.02, 0.99);
+        transform: scale(0.8);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #fff;
+        opacity: 0.3;
+        clip-path: circle(50% at 50% 50%);
+        &.index {
+            &::before,
+            &::after {
+                opacity: 1;
+            }
+        }
+        &.stadium {
+            &>div {
+                opacity: 1;
+            }
+        }
+        &.rams {
+            &::after {
+                opacity: 1;
+                transform: scale(4);
+            }
+        }
+        &.bengals {
+            &::before {
+                opacity: 1;
+                transform: scale(4);
+            }
+        }
+        &>div {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--sky-blue);
+        }
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            width: 50%;
+            top: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: 0s;
+            z-index: 2;
+            transform: scaleY(2);
+        }
+        &::before {
+            background-color: #000;
+            left: 0;
+        }
+        &::after {
+            background-color: var(--blue);
+            right: 0;
+        }
+    }
+}
+
+.w-page-links {
+    color: rgba($color: #fff, $alpha: 0);
+    font-size: 20px;
+    -webkit-text-stroke: 0.75px #fff;
+    font-weight: 800;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    z-index: 9999;
+    transition: 0.7s;
+    a {
+        padding: 40px 150px 35px;
+    }
+    &.arena {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        a {
+            display: flex;
+            align-items: flex-end;
+        }
+    }
+    &.rams {
+        right: 0;
+        top: 50%;
+        transform: translateX(35.5%) translateY(-50%) rotate(90deg);
+        a {
+            display: flex;
+            align-items: flex-end;
+        }
+    }
+    &.about {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        a {
+            display: flex;
+        }
+    }
+    &.bengals {
+        left: 0;
+        top: calc(50%);
+        transform: translateX(-35.5%) translateY(-50%) rotate(-90deg);
+        a {
+            display: flex;
+            align-items: flex-end;
+        }
+    }
+}
+
+@keyframes rotation {
+    to {
+        transform: translate(-50%, -50%) scale(1) rotate(1turn);
+    }
+}

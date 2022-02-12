@@ -1,0 +1,14 @@
+#app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    &.arena {
+        height: 300vh;
+        background: var(--sky-blue);
+        img {
+            cursor: pointer;
+        }
+    }
+}

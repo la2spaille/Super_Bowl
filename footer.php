@@ -1,8 +1,9 @@
 </main>
-<div class="w-page-links arena"><a href="arena.php">Stadium</a></div>
-<div class="w-page-links rams"><a href="team.php?id=2">Rams</a></div>
-<div class="w-page-links about"><a href="index.php">Home</a></div>
-<div class="w-page-links bengals"><a href="team.php?id=1">Bengals</a></div>
+<noscript><div class="w-noscript"><div>Please enable JavaScript to view this website.</div></div></noscript>
+<div class="w-page-links arena transformation"><a href="stadium.php">Stadium</a></div>
+<div class="w-page-links rams transformation"><a href="team.php?id=2">Rams</a></div>
+<div class="w-page-links about transformation"><a href="index.php">Home</a></div>
+<div class="w-page-links bengals transformation"><a href="team.php?id=1">Bengals</a></div>
 <div class="w-transition-overlay">
   <div>
     <div></div>
@@ -23,7 +24,6 @@
         </textPath>
       </text>
     </svg>
-
   </div>
 </div>
 <script src="js/app.js"></script>

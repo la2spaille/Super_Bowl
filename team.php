@@ -6,24 +6,24 @@ $query->execute([
 ]);
 $team = $query->fetch();
 ?>
-<div id="app">
+<div id="app" class="team"  style="background: <?= $team['primary_color'] ?>">
     <div class="l-fixed">
         <div class="l-wrapper team">
-            <section class="l-team-intro" style="background: <?= $team['primary_color'] ?>">
+            <section class="l-team-intro">
                 <div class="l-2-half-wrapper">
                     <div class="w-team-intro">
-                        <p class="w-team-slogan transformation">
+                        <p class="w-team-slogan transformation" >
                             <span><?= explode(" ", $team['slogan'])[0] ?></span>
                             <span><?= explode(" ", $team['slogan'])[1] ?></span>
                         </p>
                         <img class="transformation" src="assets/<?= $team['name'] ?>.png" alt="">
                     </div>
                     <div class="w-text team">
-                        <h1>
+                        <h1 class="transformation" style="font-family: '<?= $team['font'] ?>'; text-transform: uppercase;"> 
                             <span><?= $team['city'] ?></span>
                             <span><?= $team['name'] ?></span>
                         </h1>
-                        <div class="w-team-grid">
+                        <div class="w-team-grid transformation">
                             <p>
                                 <strong>Head Coach</strong>
                                 <span><?= $team['coach'] ?></span>
@@ -41,24 +41,12 @@ $team = $query->fetch();
                                 <span><?= $team['etablished'] ?></span>
                             </p>
                         </div>
-                        <div class="w-team-color">
+                        <div class="w-team-color transformation">
                             <h3>Main colors</h3>
                             <span style="background-color:<?= $team['primary_color']  ?>;"></span>
                             <span style="background-color:<?= $team['secondary_color']  ?>;"></span>
                             <span style="background-color:<?= $team['tertiary_color']  ?>;"></span>
                         </div>
-                        <div class="w-team-championships">
-                            <strong>Super Bowl</strong>
-                            <span> x0</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="l-team-parcours">
-                <h1 class="w-page-title"><span>History</span></h1>
-                <div class="l-wrapper">
-                    <div class="w-img">
-                        <img src="/assets/playoffs.jpg" alt="">
                     </div>
                 </div>
             </section>

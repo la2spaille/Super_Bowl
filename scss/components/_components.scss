@@ -19,27 +19,31 @@
             transform: translate(-50%, -50%) scale(1);
             animation-fill-mode: forwards;
             .zoom {
-                transform: scale(2.5);
+                transform: scale(5.5);
             }
         }
     }
-    &.site-cursor--team-hover {
+    &.site-cursor--close-hover {
+        
         .site-cursor {
-            transform: translate(-50%, -50%) scale(3.75);
+            transform: translate(-50%, -50%) scale(5);
+            background-color: transparent;
+            
         }
     }
 }
 .site-cursor {
     position: absolute;
-    height: 30px;
-    border: 1px solid #fff;
+    height: 16px;
+    background-color: #fff;
+    border: 0.2px solid #fff;
     top: 50%;
     left: 50%;
-    width: 30px;
+    width: 16px;
     border-radius: 50%;
     transform: translate(-50%, -50%) scale(1);
     transition: 0.35s ease-in-out;
-    
+
     .zoom {
         fill: #fff;
         transform: scale(0);
@@ -85,7 +89,7 @@
     pointer-events: none;
     transition: 0s;
     transform: translateX(-100%);
-    &>div {
+    & > div {
         transition: 0.7s cubic-bezier(0.19, 0.8, 0.02, 0.99);
         transform: scale(0.8);
         position: absolute;
@@ -103,7 +107,7 @@
             }
         }
         &.stadium {
-            &>div {
+            & > div {
                 opacity: 1;
             }
         }
@@ -119,7 +123,7 @@
                 transform: scale(4);
             }
         }
-        &>div {
+        & > div {
             opacity: 0;
             width: 100%;
             height: 100%;
@@ -150,8 +154,8 @@
 
 .w-page-links {
     color: rgba($color: #fff, $alpha: 0);
-    font-size: 20px;
-    -webkit-text-stroke: 0.75px #fff;
+    font-size: 22px;
+    -webkit-text-stroke: 1.5px #fff;
     font-weight: 800;
     position: fixed;
     display: flex;
@@ -170,6 +174,11 @@
             display: flex;
             align-items: flex-end;
         }
+        transition: 1s ;
+        &.transformation {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-100px);
+        }
     }
     &.rams {
         right: 0;
@@ -179,6 +188,11 @@
             display: flex;
             align-items: flex-end;
         }
+        transition: 1s ;
+        &.transformation {
+            opacity: 0;
+            transform: translateX(calc(35.5% + 100px)) translateY(-50%) rotate(90deg);
+        }
     }
     &.about {
         bottom: 0;
@@ -186,6 +200,11 @@
         transform: translateX(-50%);
         a {
             display: flex;
+        }
+        transition: 1s ;
+        &.transformation {
+            opacity: 0;
+            transform: translateX(-50%) translateY(+100px);
         }
     }
     &.bengals {
@@ -195,6 +214,12 @@
         a {
             display: flex;
             align-items: flex-end;
+        }
+
+        transition: 1s ;
+        &.transformation {
+            opacity: 0;
+            transform: translateX(calc(-35.5% - 100px)) translateY(-50%) rotate(-90deg);
         }
     }
 }

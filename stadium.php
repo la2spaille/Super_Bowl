@@ -24,7 +24,7 @@ require('header.php');
                 <img class="arena transformation--click" src="/assets/3b.jpeg" alt="">
                 <img class="arena transformation--click" src="/assets/4b.jpeg" alt="">
                 <img class="arena transformation--click" src="/assets/7b.jpeg" alt="">
-                <div class="close"><span>close</span></div>
+                <div class="close transformation"><span>close</span></div>
             </div>
         <!-- <div class="l-2-half-wrapper arena">
             <div class="w-text arena">

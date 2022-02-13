@@ -1,22 +1,111 @@
-let loader, linkHover, menuBtn, closeBtn, headerNav, reveal, allImg, isLoad, links, today, superBowl, arenaBtn, ramsBtn, aboutBtn, bengalsBtn, wTransition, transition, transform, app, appHeight, horizontalScroll, test, arenaImg, arenaLightboxImg, lightbox
+let loader, linkHover, closeBtn, reveal, allImg, isLoad, links, superBowl, arenaBtn, ramsBtn, aboutBtn, bengalsBtn, wTransition, transition, transform, appArena, appArenaHeight, appTeam, horizontalScroll, test, arenaImg, flex, teamHorizontalScroll, arenaLightboxImg, lightbox, lastScroll, siteLinks
 function init() {
-    app = document.querySelector('#app.arena')
-    appHeight = 3 * window.innerHeight
-    if(app != undefined) {
+    let accY, accX, transform
+    class Flowwwi {
+        constructor(element) {
+            this.element = element
+        }
+        /**
+            * Calcule la position de l'élement par rapport au haut de l'élement document
+            * @param {HTMLElement} element 
+            * @return {Number}
+        */
+        offsetTop() {
+            accY = 0
+            if (this.element.offsetParent) {
+                accY = offsetTop(this.element.offsetParent)
+            }
+            return this.element.offsetTop + accY
+        }
+        /**
+         * Calcule la position de l'element par rapport à la gauche de l'élement document
+         * @author la2spaille
+         * @param {HTMLElement} element 
+         * @return {Number}
+         * @
+         */
+        offsetLeft() {
+            accX = 0
+            if (this.element.offsetParent) {
+                accX = offsetLeft(this.element.offsetParent)
+            }
+            return this.element.offsetLeft + accX
+        }
+        /**
+            * @author Grafikart
+            * @returns {Parallax[]}
+            */
+        static bind() {
+            return Array.from(document.querySelectorAll('*')).map(
+                (element) => {
+                    return new Flowwwi(element)
+                }
+            )
+        }
+    }
+    Flowwwi.bind()
+
+    //////////////////////////////////////////////////////////
+
+    appArena = document.querySelector('#app.arena')
+    if (appArena != undefined) {
+        scrollTo(0, 0)
+        appArena.style.height = `${3 * window.innerHeight}px`
+        appArenaHeight = 3 * window.innerHeight
         window.addEventListener('scroll', () => {
             const { scrollTop, scrollHeight, clientHeight } = document.documentElement
-            if (clientHeight + scrollTop >= scrollHeight - 200) {
-                appHeight = appHeight + 400
-                app.style.height = `${appHeight}px`
-            }
+            window.requestAnimationFrame(() => {
+                if (clientHeight + scrollTop >= scrollHeight - 200) {
+                    appArenaHeight += 400
+                    appArena.style.height = `${appArenaHeight}px`
+                }
+            })
         })
     }
+    appTeam = document.querySelector('#app.team')
+    flex = false
+    lastScroll = 0
+    if (appTeam != undefined) {
+        scrollTo(0, -1 + window.innerHeight / 2)
+        teamHorizontalScroll = document.querySelector('.l-wrapper.team')
+        window.addEventListener('scroll', () => {
+            lastScroll = window.scrollY
+            if (!flex) {
+                window.requestAnimationFrame(() => {
+                    if (window.scrollY < window.innerHeight / 2) {
+                        teamHorizontalScroll.style.transform = `translateX(${0}px)`
+                        scrollTo(0, -1 + window.innerHeight / 2)
+
+                    }
+                    if (window.scrollY > window.innerHeight / 2) {
+                        teamHorizontalScroll.style.transform = `translateX(${-window.innerWidth}px)`
+                        scrollTo(0, 1 + window.innerHeight / 2)
+                    }
+                    flex = false
+                })
+            }
+            flex = true
+        })
+    }
+    // function scrollSnap(element) {
+    //     window.scrollTo(0, offsetTop(element))
+    // }
+    // let options = {
+    //     root:'',
+    //     threeshold:0.51
+    // }
+
+    // let observe = new IntersectionObserver(scrollSnap,options )
+    // document.querySelectorAll('section').forEach(section => {
+    //     observe(section)
+    // })
 
     //////////////////////////////////////////////////////////
 
     linkHover = document.querySelectorAll('.link-hover')
     reveal = document.querySelectorAll('.transformation')
     links = document.querySelectorAll('a')
+    siteLinks = document.querySelectorAll('.w-page-links')
 
     //////////////////////////////////////////////////////////
 
@@ -43,9 +132,14 @@ function init() {
         link.addEventListener('click', (e) => {
             e.stopPropagation()
             wTransition.style.transition = "1s"
+            siteLinks.forEach(liiink => {
+                liiink.style.transition = "1s 0s"
+                liiink.classList.add('transformation')
+            })
             setTimeout(() => {
                 wTransition.style.transform = `translateX(${x1}) translateY(${y1})`
                 transition.style.opacity = "1"
+
                 if (link == aboutBtn) {
                     transition.classList.add('index')
                 }
@@ -92,11 +186,12 @@ function init() {
     arenaImg = document.querySelectorAll('.w-gallery img.arena')
     arenaLightboxImg = document.querySelectorAll('.w-lightbox img.arena')
     closeBtn = document.querySelector('.close')
-    if(arenaImg.length !=0) {
+    if (arenaImg.length != 0) {
         arenaImg.forEach((img, index) => {
             img.addEventListener('click', () => {
                 links.forEach(link => {
                     link.style.opacity = "0"
+                    closeBtn.classList.remove('transformation')
                     setTimeout(() => {
                         link.style.visibility = "hidden"
                     }, 300);
@@ -105,15 +200,15 @@ function init() {
                 lightbox.style.transition = "clip-path 2s cubic-bezier(0.19, 0.8, 0.02, 0.99), opacity 0s"
                 setTimeout(() => {
                     lightbox.classList.remove('transformation--click')
-    
                 }, 200);
                 setTimeout(() => {
                     arenaLightboxImg[index].classList.remove('transformation--click')
+
                 }, 1000);
             })
         })
     }
-    if(closeBtn !=undefined) {
+    if (closeBtn != undefined) {
         closeBtn.addEventListener('click', () => {
             links.forEach(link => {
                 link.style.opacity = "1"
@@ -125,46 +220,19 @@ function init() {
                 setTimeout(() => {
                     lightbox.classList.add('transformation--click')
                     arenaLightboxImg[index].classList.add('transformation--click')
-    
+                    closeBtn.classList.add('transformation')
                 }, 1000);
             })
-        })    
+        })
     }
 
     //////////////////////////////////////////////////////////
 
     // Parallax
-    let accY, accX, transform
-    /**
-    * Calcule la position de l'élement par rapport au haut de l'élement document
-    * @param {HTMLElement} element 
-    * @return {Number}
-    */
-    function offsetTop(element) {
-        accY = 0
-        if (element.offsetParent) {
-            accY = offsetTop(element.offsetParent)
-        }
-        return element.offsetTop + accY
-    }
-    /**
-     * Calcule la position de l'element par rapport à la gauche de l'élement document
-     * @author la2spaille
-     * @param {HTMLElement} element 
-     * @return {Number}
-     * @
-     */
-    function offsetLeft(element) {
-        accX = 0
-        if (element.offsetParent) {
-            accX = offsetLeft(element.offsetParent)
-        }
-        return element.offsetLeft + accX
-    }
-    class Parallax {
+    class Parallax extends Flowwwi {
         constructor(element) {
             this.element = element,
-                this.para = this.element.attributes['data-parallax'].value;
+            this.para = this.element.attributes['data-parallax'].value;
             this.paraY = parseFloat(this.para.split('/')[0], 10);
             this.paraX = parseFloat(this.para.split('/')[1], 10) || 0;
             this.paraR = parseFloat(this.para.split('/')[2], 10) || 0;
@@ -177,7 +245,7 @@ function init() {
             this.onIntersection = this.onIntersection.bind(this);
             this.onResize = this.onResize.bind(this);
 
-            this.elementY = offsetTop(this.element) + (this.element.offsetHeight / 2);
+            this.elementY = this.element.offsetTop() + (this.element.offsetHeight / 2);
             this.test = 0
             this.houm = 0
             const observer = new IntersectionObserver(this.onIntersection);
@@ -193,7 +261,7 @@ function init() {
                 if (this.paraX != 0 || entry.isIntersecting) {
                     document.addEventListener("scroll", this.parallaxTransform);
                     window.addEventListener("resize", this.onResize);
-                    this.elementY = offsetTop(this.element) + this.element.offsetHeight / 2;
+                    this.elementY = this.element.offsetTop() + this.element.offsetHeight / 2;
                 } else {
                     document.removeEventListener("scroll", this.parallaxTransform);
                     window.removeEventListener('resize', this.onResize);
@@ -201,7 +269,7 @@ function init() {
             }
         }
         onResize() {
-            this.elementY = offsetTop(this.element) + this.element.offsetHeight / 2;
+            this.elementY = this.element.offsetTop() + this.element.offsetHeight / 2;
             this.parallaxTransform();
         }
         parallaxTransform() {
@@ -267,16 +335,30 @@ document.addEventListener('mousemove', (e) => {
                 event.stopPropagation()
             })
         })
-        arenaImg.forEach(img => {
-            img.addEventListener('mouseenter', (event) => {
-                siteCursor.classList.add('site-cursor--img-hover')
+        if (arenaImg.length != 0) {
+            arenaImg.forEach(img => {
+                img.addEventListener('mouseenter', (event) => {
+                    siteCursor.classList.add('site-cursor--img-hover')
+                    event.stopPropagation()
+                })
+                img.addEventListener('mouseleave', (event) => {
+                    siteCursor.classList.remove('site-cursor--img-hover')
+                    event.stopPropagation()
+                })
+            })
+        }
+
+        if (closeBtn != undefined) {
+            closeBtn.addEventListener('mouseenter', (event) => {
+                siteCursor.classList.add('site-cursor--close-hover')
                 event.stopPropagation()
             })
-            img.addEventListener('mouseleave', (event) => {
-                siteCursor.classList.remove('site-cursor--img-hover')
+            closeBtn.addEventListener('mouseleave', (event) => {
+                siteCursor.classList.remove('site-cursor--close-hover')
                 event.stopPropagation()
             })
-        })
+        }
+
 
     })
 })
@@ -304,10 +386,13 @@ let pageTransition = function () {
             setTimeout(() => {
                 document.querySelector("main").innerHTML = select // contient le résultat de la page
                 pageTransition()
+                siteLinks.forEach(liiink => {
+                    liiink.style.transition = "1s 2s"
+                })
                 reveal.forEach(reveal => {
                     setTimeout(() => {
                         reveal.classList.remove('transformation')
-                    }, 700);
+                    }, 1500);
                 })
             }, 300);
             if (e.target.getAttribute('href') != window.location) {

@@ -5,10 +5,13 @@
     overflow: hidden;
     position: relative;
     &.arena {
-        height: 300vh;
         background: var(--sky-blue);
         img {
             cursor: pointer;
         }
+    }
+    &.team {
+        overflow: visible;
+        height: 200vw;
     }
 }

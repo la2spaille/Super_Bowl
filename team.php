@@ -6,9 +6,9 @@ $query->execute([
 ]);
 $team = $query->fetch();
 ?>
-<div id="app" class="team"  style="background: <?= $team['primary_color'] ?>">
+<div id="app" class="team l-infinite-scroll"  style="background: <?= $team['primary_color'] ?>">
     <div class="l-fixed">
-        <div class="l-wrapper team">
+        <div class="l-wrapper team l-snapping-scroll ">
             <section class="l-team-intro">
                 <div class="l-2-half-wrapper">
                     <div class="w-team-intro">
@@ -51,6 +51,30 @@ $team = $query->fetch();
                 </div>
             </section>
             <section class="l-team-roster">
+                <h1 class="w-page-title"><span>Roster</span></h1>
+                <div class="l-wrapper">
+                    <div class="w-team-roster"></div>
+                    <div class="w-team-roster"></div>
+                    <div class="w-team-roster"></div>
+                </div>
+            </section>
+            <section class="l-team-roster" style="background:salmon;">
+                <h1 class="w-page-title"><span>Roster</span></h1>
+                <div class="l-wrapper">
+                    <div class="w-team-roster"></div>
+                    <div class="w-team-roster"></div>
+                    <div class="w-team-roster"></div>
+                </div>
+            </section>
+            <section class="l-team-roster" style="background:green;">
+                <h1 class="w-page-title"><span>Roster</span></h1>
+                <div class="l-wrapper">
+                    <div class="w-team-roster"></div>
+                    <div class="w-team-roster"></div>
+                    <div class="w-team-roster"></div>
+                </div>
+            </section>
+            <section class="l-team-roster" style="background:purple;">
                 <h1 class="w-page-title"><span>Roster</span></h1>
                 <div class="l-wrapper">
                     <div class="w-team-roster"></div>

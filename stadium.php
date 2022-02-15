@@ -2,9 +2,10 @@
 require('header.php');
 
 ?>
-<div id="app" class="arena" style="background-color: #02a9ce;">
+<div id="app" class="arena l-infinite-scroll" style="background-color: #02a9ce;">
     <div class="l-fixed arena">
-            <h1 class="w-page-title transformation"><span>STADIUM</span></h1>
+        <h1 class="w-page-title transformation"><span>STADIUM</span></h1>
+
             <div class="w-gallery">
                 <div class="w-gallery--row transformation">
                     <img class="arena" data-parallax="0/-1" src="/assets/SoFi-Stadium-Bowl.jpeg" alt="">

@@ -1,21 +1,24 @@
 let loader, linkHover, closeBtn, reveal, allImg, isLoad, links, superBowl, arenaBtn, ramsBtn, aboutBtn, bengalsBtn, wTransition, transition, transform, appArena, appArenaHeight, appTeam, horizontalScroll, test, arenaImg, flex, teamHorizontalScroll, arenaLightboxImg, lightbox, lastScroll, siteLinks
 function init() {
-    let accY, accX, transform
+    // let transform
     class Flowwwi {
         constructor(element) {
             this.element = element
+            this.accX = 0
+            this.accY = 0
+            this.OffsetTopDoc = this.offsetTop(this.element)
+            this.OffsetLeftDoc = this.offsetLeft(this.element)
         }
         /**
             * Calcule la position de l'élement par rapport au haut de l'élement document
             * @param {HTMLElement} element 
             * @return {Number}
         */
-        offsetTop() {
-            accY = 0
-            if (this.element.offsetParent) {
-                accY = offsetTop(this.element.offsetParent)
+        offsetTop(element) {
+            if (element.offsetParent) {
+                this.accY = this.offsetTop(element.offsetParent)
             }
-            return this.element.offsetTop + accY
+            return element.offsetTop + this.accY
         }
         /**
          * Calcule la position de l'element par rapport à la gauche de l'élement document
@@ -25,11 +28,10 @@ function init() {
          * @
          */
         offsetLeft() {
-            accX = 0
             if (this.element.offsetParent) {
-                accX = offsetLeft(this.element.offsetParent)
+                this.accX = this.element.offsetParent.offsetLeft
             }
-            return this.element.offsetLeft + accX
+            return this.element.offsetLeft + this.accX
         }
         /**
             * @author Grafikart
@@ -47,46 +49,105 @@ function init() {
 
     //////////////////////////////////////////////////////////
 
-    appArena = document.querySelector('#app.arena')
-    if (appArena != undefined) {
-        scrollTo(0, 0)
-        appArena.style.height = `${3 * window.innerHeight}px`
-        appArenaHeight = 3 * window.innerHeight
-        window.addEventListener('scroll', () => {
-            const { scrollTop, scrollHeight, clientHeight } = document.documentElement
-            window.requestAnimationFrame(() => {
-                if (clientHeight + scrollTop >= scrollHeight - 200) {
-                    appArenaHeight += 400
-                    appArena.style.height = `${appArenaHeight}px`
-                }
-            })
-        })
-    }
-    appTeam = document.querySelector('#app.team')
-    flex = false
-    lastScroll = 0
-    if (appTeam != undefined) {
-        scrollTo(0, -1 + window.innerHeight / 2)
-        teamHorizontalScroll = document.querySelector('.l-wrapper.team')
-        window.addEventListener('scroll', () => {
-            lastScroll = window.scrollY
-            if (!flex) {
+    class InfiniteScroll {
+        constructor(element) {
+            this.element = element
+            this.height = window.innerHeight
+            this.infiniteScroll = this.infiniteScroll.bind(this);
+            this.infiniteScroll()
+        }
+        infiniteScroll() {
+            scrollTo(0, 0)
+            this.element.style.height = `${3 * window.innerHeight}px`
+            this.height = 3 * window.innerHeight
+            window.addEventListener('scroll', () => {
+                const { scrollTop, scrollHeight, clientHeight } = document.documentElement
                 window.requestAnimationFrame(() => {
-                    if (window.scrollY < window.innerHeight / 2) {
-                        teamHorizontalScroll.style.transform = `translateX(${0}px)`
-                        scrollTo(0, -1 + window.innerHeight / 2)
-
+                    if (clientHeight + scrollTop >= scrollHeight - 200) {
+                        this.height += 400
+                        this.element.style.height = `${this.height}px`
                     }
-                    if (window.scrollY > window.innerHeight / 2) {
-                        teamHorizontalScroll.style.transform = `translateX(${-window.innerWidth}px)`
-                        scrollTo(0, 1 + window.innerHeight / 2)
-                    }
-                    flex = false
                 })
-            }
-            flex = true
-        })
+            })
+        }
+        static bind() {
+            return Array.from(document.querySelectorAll('.l-infinite-scroll')).map(
+                (element) => {
+                    return new InfiniteScroll(element)
+                }
+            )
+        }
     }
+    InfiniteScroll.bind()
+
+    //////////////////////////////////////////////////////////
+
+    class SnappingScroll {
+        constructor(element) {
+            this.element = element
+            this.isScroll = false
+            this.count = 0
+            this.snappingScroll = this.snappingScroll.bind(this);
+            this.snappingScroll()
+        }
+        snappingScroll() {
+            this.isScroll = false
+            window.addEventListener('scroll', () => {
+                this.isScroll = true
+            })
+            let beforeScroll = window.scrollY
+            let TIME = setInterval(() => {
+                if (this.isScroll == true) {
+                    let diffScroll = window.scrollY - beforeScroll
+                    if(diffScroll>0) {
+                        this.count++
+                    } 
+                     if (this.count>0 && diffScroll<0) {
+                        this.count--
+                    }
+                    this.element.style.transform = `translateX(${-this.count*window.innerWidth}px)`
+                    console.log(this.count)
+                    clearInterval(TIME)
+                    setTimeout(() => {
+                        this.snappingScroll()
+                    }, 1500);
+                }
+            }, 200);
+        }
+        static bind() {
+            return Array.from(document.querySelectorAll('.l-snapping-scroll')).map(
+                (element) => {
+                    return new SnappingScroll(element)
+                }
+            )
+        }
+    }
+    SnappingScroll.bind()
+    // appTeam = document.querySelector('#app.team')
+    // flex = false
+    // lastScroll = 0
+    // if (appTeam != undefined) {
+    //     // scrollTo(0, -1 + window.innerHeight / 2)
+    //     teamHorizontalScroll = document.querySelector('.l-wrapper.team')
+    //     window.addEventListener('scroll', () => {
+    //         lastScroll = window.scrollY
+    //         if (!flex) {
+    //             window.requestAnimationFrame(() => {
+    //                 if (window.scrollY < window.innerHeight / 2) {
+    //                     teamHorizontalScroll.style.transform = `translateX(${0}px)`
+    //                     // scrollTo(0, -1 + window.innerHeight / 2)
+
+    //                 }
+    //                 if (window.scrollY > window.innerHeight / 2) {
+    //                     teamHorizontalScroll.style.transform = `translateX(${-window.innerWidth}px)`
+    //                     // scrollTo(0, 1 + window.innerHeight / 2)
+    //                 }
+    //                 flex = false
+    //             })
+    //         }
+    //         flex = true
+    //     })
+    // }
     // function scrollSnap(element) {
     //     window.scrollTo(0, offsetTop(element))
     // }
@@ -231,7 +292,7 @@ function init() {
     // Parallax
     class Parallax extends Flowwwi {
         constructor(element) {
-            this.element = element,
+            super(element)
             this.para = this.element.attributes['data-parallax'].value;
             this.paraY = parseFloat(this.para.split('/')[0], 10);
             this.paraX = parseFloat(this.para.split('/')[1], 10) || 0;
@@ -245,7 +306,7 @@ function init() {
             this.onIntersection = this.onIntersection.bind(this);
             this.onResize = this.onResize.bind(this);
 
-            this.elementY = this.element.offsetTop() + (this.element.offsetHeight / 2);
+            this.elementY = super.offsetTopDoc + (this.element.offsetHeight / 2);
             this.test = 0
             this.houm = 0
             const observer = new IntersectionObserver(this.onIntersection);
@@ -261,7 +322,7 @@ function init() {
                 if (this.paraX != 0 || entry.isIntersecting) {
                     document.addEventListener("scroll", this.parallaxTransform);
                     window.addEventListener("resize", this.onResize);
-                    this.elementY = this.element.offsetTop() + this.element.offsetHeight / 2;
+                    this.elementY = super.offsetTopDoc + this.element.offsetHeight / 2;
                 } else {
                     document.removeEventListener("scroll", this.parallaxTransform);
                     window.removeEventListener('resize', this.onResize);
@@ -269,25 +330,28 @@ function init() {
             }
         }
         onResize() {
-            this.elementY = this.element.offsetTop() + this.element.offsetHeight / 2;
+            this.elementY = super.offsetTopDoc + this.element.offsetHeight / 2;
             this.parallaxTransform();
         }
         parallaxTransform() {
-            window.requestAnimationFrame(() => {
-                if (this.element.getBoundingClientRect().right < 0) {
-                    this.test++
-                    this.houm = this.element.offsetWidth
-                }
-                if (this.element.getBoundingClientRect().x > window.innerWidth) {
-                    this.test--
-                    this.houm = this.element.offsetWidth
-                }
-                transform = `translateX(${this.paraX * window.scrollY + (window.innerWidth + 90) * this.test + this.houm * this.test}px)`
+            window.addEventListener('scroll', () => {
+                window.requestAnimationFrame(() => {
+                    if (this.element.getBoundingClientRect().right < 0) {
+                        this.test++
+                        this.houm = this.element.offsetWidth
+                    }
+                    if (this.element.getBoundingClientRect().x > window.innerWidth) {
+                        this.test--
+                        this.houm = this.element.offsetWidth
+                    }
+                    transform = `translateX(${this.paraX * window.scrollY + (window.innerWidth + 90) * this.test + this.houm * this.test}px)`
 
-                // }
-                // console.log(this.element.getBoundingClientRect().right)
-                this.element.style.setProperty('transform', transform)
+                    // }
+                    // console.log(this.element.getBoundingClientRect().right)
+                    this.element.style.setProperty('transform', transform)
+                })
             })
+
         }
         /**
          * @author Grafikart
